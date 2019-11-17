@@ -11,19 +11,17 @@ services:
       - ML-backend-tier
     ports:
       - 6379:6379 
-    oracle-db:
-      # Login http://localhost:8080/apex/apex_admin with following credential:
-      # username: ADMIN
-      # password: admin
-      image: oracleinanutshell/oracle-xe-11g:latest
-      ports:
-        - 1521:1521
-        - 5500:5500
-        - 8080:8080
-      environment:
-        - ORACLE_DISABLE_ASYNCH_IO=true
-
-
+  oracle-db:
+    # Login http://localhost:8080/apex/apex_admin with following credential:
+    # username: ADMIN
+    # password: admin
+    image: oracleinanutshell/oracle-xe-11g:latest
+    ports:
+      - 1521:1521
+      - 5500:5500
+      - 8080:8080
+    environment:
+      - ORACLE_DISABLE_ASYNCH_IO=true
 
 networks:
   ML-backend-tier:
