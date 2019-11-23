@@ -5,7 +5,6 @@ class DynamoConnector:
     """
     Class to connect to to DynamoDB
     """
-
     def __init__(self):
         self.dynamo = aioboto3.resource('dynamodb', 'us-east-1')
 
@@ -20,20 +19,27 @@ class DynamoConnector:
 
         return response
 
-    async def put_item(self, table_name):
+    async def put_item(self, table_name, item):
         with self.dynamo as dynamo_resource:
-            response = await dynamo_resource.put_item(table_name)
+            table = dynamo_resource.Table(table_name)
+            response = await table.put_item(Item=item)
 
         return response
 
-    async def get_item(self, table_name):
+    async def get_item(self, table_name, key):
         with self.dynamo as dynamo_resource:
-            response = await dynamo_resource.get_item(table_name)
+            table = dynamo_resource.Table(table_name)
+            response = await table.get_item(Key=key)
 
-        return response
+        return response['Item']
 
-    async def update_item(self, table_name):
+    async def update_item(self, table_name, key, updateExpression,
+                          expressionAttributeValues):
         with self.dynamo as dynamo_resource:
-            response = await dynamo_resource.update_item(table_name)
+            table = dynamo_resource.Table(table_name)
+            response = await table.update_item(
+                Key=key,
+                UpdateExpression=updateExpression,
+                ExpressionAttributeValues=expressionAttributeValues)
 
         return response
